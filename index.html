@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Official Sadaf Experience™</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Fredoka', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          animation: {
+            'bounce-slow': 'bounce 2.5s infinite',
+            'spin-slow': 'spin 8s linear infinite',
+            'wiggle': 'wiggle 0.5s ease-in-out infinite',
+            'float': 'float 3s ease-in-out infinite',
+          },
+          keyframes: {
+            wiggle: {
+              '0%, 100%': { transform: 'rotate(-3deg)' },
+              '50%': { transform: 'rotate(3deg)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at 10% 20%, rgb(255, 237, 240) 0%, rgb(253, 242, 248) 40%, rgb(240, 249, 255) 90%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .custom-shadow {
+      box-shadow: 6px 6px 0px #0f172a;
+    }
+    .custom-shadow-pink {
+      box-shadow: 6px 6px 0px #db2777;
+    }
+    .custom-shadow-sm {
+      box-shadow: 3px 3px 0px #0f172a;
+    }
+    .badge-pop {
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .badge-pop:hover {
+      transform: scale(1.08) rotate(-2deg);
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-800 antialiased selection:bg-pink-300 selection:text-pink-900">
+
+  <!-- Floating Background Emojis -->
+  <div class="fixed inset-0 pointer-events-none select-none z-0 overflow-hidden opacity-30">
+    <span class="absolute top-12 left-10 text-4xl animate-float" style="animation-delay: 0s;">💅</span>
+    <span class="absolute top-48 right-16 text-5xl animate-float" style="animation-delay: 1s;">✨</span>
+    <span class="absolute bottom-32 left-20 text-4xl animate-float" style="animation-delay: 1.5s;">🍕</span>
+    <span class="absolute bottom-16 right-28 text-5xl animate-float" style="animation-delay: 0.5s;">👑</span>
+    <span class="absolute top-1/2 left-8 text-3xl animate-float" style="animation-delay: 2s;">🧋</span>
+    <span class="absolute top-1/3 right-12 text-4xl animate-float" style="animation-delay: 2.5s;">🍿</span>
+  </div>
+
+  <!-- Main Container -->
+  <div class="relative z-10 max-w-5xl mx-auto px-4 py-8 sm:py-12 flex flex-col gap-10">
+
+    <!-- Top Announcement Bar -->
+    <header class="text-center">
+      <div class="inline-flex items-center gap-2 bg-pink-100 border-2 border-slate-900 rounded-full px-5 py-1.5 font-bold text-xs sm:text-sm custom-shadow-sm animate-wiggle mb-6">
+        <span class="w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping"></span>
+        🚨 BREAKING NEWS: Sadaf is officially crowned the #1 Bestie!
+      </div>
+
+      <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 mb-4">
+        THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 underline decoration-wavy decoration-pink-300">SADAF</span> CHRONICLES
+      </h1>
+      <p class="text-lg sm:text-2xl font-medium text-slate-600 max-w-2xl mx-auto">
+        A 100% certified, scientifically unverified celebration of my iconic best friend.
+      </p>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mt-6">
+        <button onclick="triggerConfettiStorm()" class="bg-yellow-300 hover:bg-yellow-400 text-slate-900 border-2 border-slate-900 font-bold px-6 py-3 rounded-2xl custom-shadow transition active:translate-x-1 active:translate-y-1 flex items-center gap-2 text-base">
+          <span>🎉</span> Blast Confetti!
+        </button>
+        <button onclick="playSound('fanfare'); showModal('complimentModal')" class="bg-pink-400 hover:bg-pink-500 text-white border-2 border-slate-900 font-bold px-6 py-3 rounded-2xl custom-shadow transition active:translate-x-1 active:translate-y-1 flex items-center gap-2 text-base">
+          <span>💖</span> Wholesome Truth
+        </button>
+        <button onclick="playSound('boing'); showModal('roastModal')" class="bg-purple-300 hover:bg-purple-400 text-slate-900 border-2 border-slate-900 font-bold px-6 py-3 rounded-2xl custom-shadow transition active:translate-x-1 active:translate-y-1 flex items-center gap-2 text-base">
+          <span>🔥</span> Mild Roast
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Card: Sadaf OS Status -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Avatar & Photo Area -->
+      <div class="bg-white border-3 border-slate-900 rounded-3xl p-6 custom-shadow flex flex-col items-center text-center justify-between relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-24 h-24 bg-pink-200 rounded-full blur-xl"></div>
+        
+        <div class="relative group cursor-pointer" onclick="toggleAvatar()">
+          <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gradient-to-tr from-pink-300 via-purple-200 to-amber-200 p-2 border-3 border-slate-900 shadow-inner flex items-center justify-center mx-auto transition-transform group-hover:scale-105">
+            <div id="avatarDisplay" class="text-7xl select-none">👑</div>
+          </div>
+          <span class="absolute bottom-1 right-2 bg-yellow-300 border-2 border-slate-900 text-xs font-bold px-2 py-0.5 rounded-full custom-shadow-sm">
+            Click to Change!
+          </span>
+        </div>
+
+        <div class="mt-4">
+          <h2 class="font-display text-2xl font-bold text-slate-900 flex items-center justify-center gap-1.5">
+            SADAF <span class="text-pink-500">★</span>
+          </h2>
+          <p class="text-xs uppercase tracking-widest text-slate-400 font-black mt-0.5">Title: Chief Drama Officer</p>
+          <div class="mt-3 flex flex-wrap justify-center gap-1.5">
+            <span class="bg-pink-100 text-pink-700 text-xs font-bold px-2.5 py-1 rounded-full border border-pink-300 badge-pop">Main Character</span>
+            <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2.5 py-1 rounded-full border border-purple-300 badge-pop">Coffee Addict</span>
+            <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full border border-emerald-300 badge-pop">Elite Gossip Curator</span>
+          </div>
+        </div>
+
+        <button onclick="complimentSadafVoice()" class="w-full mt-4 bg-slate-900 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-slate-800 transition active:scale-95 flex items-center justify-center gap-2 text-sm">
+          <span>🔊</span> Say Name Out Loud
+        </button>
+      </div>
+
+      <!-- Live Sadaf Status Dashboard -->
+      <div class="md:col-span-2 bg-amber-50 border-3 border-slate-900 rounded-3xl p-6 custom-shadow flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between border-b-2 border-slate-900 pb-3 mb-4">
+            <div class="flex items-center gap-2 font-display text-lg sm:text-xl font-bold text-slate-900">
+              <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-slate-900"></span>
+              Live Sadaf Status Monitor
+            </div>
+            <span class="text-xs font-bold bg-white px-2.5 py-1 border border-slate-900 rounded-md">v4.2.0</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Metric 1 -->
+            <div class="bg-white p-3.5 rounded-2xl border-2 border-slate-900">
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Phone Battery</div>
+              <div class="text-xl font-black text-rose-500 mt-1 flex items-center gap-1.5">
+                🪫 4% <span class="text-xs font-normal text-slate-500">(Refuses to plug in)</span>
+              </div>
+            </div>
+
+            <!-- Metric 2 -->
+            <div class="bg-white p-3.5 rounded-2xl border-2 border-slate-900">
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Text Reply Speed</div>
+              <div class="text-xl font-black text-purple-600 mt-1 flex items-center gap-1.5">
+                ⏳ 30s or 5 Days
+              </div>
+            </div>
+
+            <!-- Metric 3 -->
+            <div class="bg-white p-3.5 rounded-2xl border-2 border-slate-900">
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Current Activity</div>
+              <div class="text-base font-bold text-slate-800 mt-1 flex items-center gap-1">
+                🛋️ "Resting eyes" (Sleeping)
+              </div>
+            </div>
+
+            <!-- Metric 4 -->
+            <div class="bg-white p-3.5 rounded-2xl border-2 border-slate-900">
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Snack Cravings</div>
+              <div class="text-base font-bold text-pink-600 mt-1 flex items-center gap-1">
+                🍟 MAXIMUM (Wants fries rn)
+              </div>
+            </div>
+          </div>
+
+          <!-- Quote of the Day -->
+          <div class="mt-4 bg-pink-100 border-2 border-slate-900 p-3.5 rounded-2xl flex items-start gap-3">
+            <span class="text-2xl">🗣️</span>
+            <div>
+              <div class="text-xs font-extrabold uppercase text-pink-800 tracking-wider">Sadaf's Motto Today:</div>
+              <div id="randomQuote" class="text-sm font-semibold text-slate-900 italic mt-0.5">
+                "I have literally nothing to wear." (Wardrobe currently collapsing under the weight of 85 outfits)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex justify-end">
+          <button onclick="refreshMotto()" class="text-xs font-bold text-slate-700 bg-white border border-slate-900 px-3 py-1.5 rounded-xl hover:bg-slate-100 transition active:scale-95 flex items-center gap-1">
+            🔄 New Motto
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Section 1: Should Sadaf Reply Simulator -->
+    <section class="bg-white border-3 border-slate-900 rounded-3xl p-6 sm:p-8 custom-shadow">
+      <div class="text-center max-w-xl mx-auto mb-6">
+        <h2 class="font-display text-3xl sm:text-4xl font-black text-slate-900">
+          📱 The Sadaf Texting Simulator
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-1">
+          Wondering how Sadaf will respond to your text message? Hit the oracle button.
+        </p>
+      </div>
+
+      <div class="max-w-md mx-auto bg-slate-50 border-2 border-slate-900 rounded-2xl p-5 text-center flex flex-col items-center gap-4">
+        <div class="w-full flex items-center justify-between text-xs font-bold text-slate-400 border-b pb-2">
+          <span>iMessage with Sadaf</span>
+          <span class="text-emerald-500">Online</span>
+        </div>
+
+        <div id="simulatedChat" class="w-full flex flex-col gap-2 min-h-[90px] justify-center">
+          <div class="bg-pink-500 text-white font-medium text-sm py-2 px-4 rounded-2xl rounded-br-sm self-end max-w-[80%] text-right custom-shadow-sm">
+            "Hey Sadaf, you free right now?"
+          </div>
+          <div id="sadafAnswerBox" class="bg-slate-200 text-slate-700 font-semibold text-sm py-2 px-4 rounded-2xl rounded-bl-sm self-start max-w-[85%] text-left hidden">
+            <!-- Simulated response injected here -->
+          </div>
+        </div>
+
+        <button onclick="simulateTextReply()" class="w-full bg-emerald-400 hover:bg-emerald-500 text-slate-900 font-black py-3 rounded-xl border-2 border-slate-900 custom-shadow-sm transition active:translate-x-0.5 active:translate-y-0.5 flex items-center justify-center gap-2">
+          <span>🎲</span> Generate Sadaf's Reply
+        </button>
+      </div>
+    </section>
+
+    <!-- Interactive Section 2: Sadaf Soundboard (Web Audio Synthesizer) -->
+    <section class="bg-purple-100 border-3 border-slate-900 rounded-3xl p-6 sm:p-8 custom-shadow">
+      <div class="text-center max-w-xl mx-auto mb-6">
+        <span class="bg-purple-300 border border-slate-900 text-xs font-black uppercase px-3 py-1 rounded-full text-slate-900">
+          Audio Experience
+        </span>
+        <h2 class="font-display text-3xl sm:text-4xl font-black text-slate-900 mt-2">
+          🔊 The Sadaf Catchphrase Soundboard
+        </h2>
+        <p class="text-slate-600 text-sm mt-1">
+          Click any button to hear Sadaf's iconic internal thoughts aloud!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <button onclick="playCatchphrase('I am literally starving', 'starving')" class="bg-white hover:bg-pink-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">🍕</span>
+          <span class="text-xs sm:text-sm text-slate-800">"I'm literally starving"</span>
+        </button>
+
+        <button onclick="playCatchphrase('Wait, hear me out though', 'gossip')" class="bg-white hover:bg-yellow-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">👀</span>
+          <span class="text-xs sm:text-sm text-slate-800">"Wait, hear me out..."</span>
+        </button>
+
+        <button onclick="playCatchphrase('I am literally on my way right now', 'late')" class="bg-white hover:bg-blue-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">🚗</span>
+          <span class="text-xs sm:text-sm text-slate-800">"I'm on my way!" (Lies)</span>
+        </button>
+
+        <button onclick="playCatchphrase('That is so iconic of me', 'iconic')" class="bg-white hover:bg-purple-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">✨</span>
+          <span class="text-xs sm:text-sm text-slate-800">"That's so iconic"</span>
+        </button>
+
+        <button onclick="playCatchphrase('Should I buy this? Be honest', 'shopping')" class="bg-white hover:bg-rose-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">🛍️</span>
+          <span class="text-xs sm:text-sm text-slate-800">"Should I buy this?"</span>
+        </button>
+
+        <button onclick="playCatchphrase('I need a sweet treat immediately', 'treat')" class="bg-white hover:bg-emerald-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">🧋</span>
+          <span class="text-xs sm:text-sm text-slate-800">"I need a sweet treat"</span>
+        </button>
+
+        <button onclick="playCatchphrase('I cannot deal with this today', 'tired')" class="bg-white hover:bg-orange-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">🥱</span>
+          <span class="text-xs sm:text-sm text-slate-800">"I can't deal today"</span>
+        </button>
+
+        <button onclick="playCatchphrase('OMG wait, who was that?!', 'drama')" class="bg-white hover:bg-indigo-50 border-2 border-slate-900 p-4 rounded-2xl custom-shadow-sm transition font-bold text-center flex flex-col items-center gap-2 active:translate-y-1">
+          <span class="text-3xl">☕</span>
+          <span class="text-xs sm:text-sm text-slate-800">"Spill the tea NOW"</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Interactive Section 3: Sadaf Friendship Contract & Runaway Button -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Official Bestie Certificate -->
+      <div class="bg-white border-3 border-slate-900 rounded-3xl p-6 custom-shadow flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-2 text-pink-600 font-display text-xl font-bold mb-3">
+            <span>📜</span> Official Best Friend Contract
+          </div>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            By being in Sadaf's presence, you hereby agree to:
+          </p>
+          <ul class="mt-3 space-y-2 text-xs sm:text-sm font-semibold text-slate-700">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✔</span> Listen to 7 voice notes that could have been a 5-word text.
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✔</span> Approve her selfies within 45 seconds of receiving them.
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✔</span> Pretend you are also not hungry, then eat half her fries.
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✔</span> Loyalty policy: Lifetime warranty, strictly non-refundable!
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-6 pt-4 border-t-2 border-dashed border-slate-300 flex items-center justify-between">
+          <div>
+            <div class="font-display font-black text-slate-900 text-lg">Friendship Status</div>
+            <div class="text-xs text-emerald-600 font-bold">100% UNCONDITIONAL LOVE</div>
+          </div>
+          <button onclick="stampApproval(this)" class="bg-pink-500 hover:bg-pink-600 text-white font-black text-xs px-4 py-2 rounded-xl border-2 border-slate-900 custom-shadow-sm active:scale-95 transition">
+            SEAL CONTRACT 💌
+          </button>
+        </div>
+      </div>
+
+      <!-- Impossible Complaint Department (Runaway Button!) -->
+      <div class="bg-rose-50 border-3 border-slate-900 rounded-3xl p-6 custom-shadow flex flex-col justify-between relative overflow-hidden">
+        <div>
+          <div class="flex items-center gap-2 text-rose-600 font-display text-xl font-bold mb-2">
+            <span>🚨</span> File a Complaint Against Sadaf
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 mb-4">
+            Did Sadaf steal your food? Cancel plans last minute? Try submitting a complaint below. (Good luck trying to click it!)
+          </p>
+
+          <div class="bg-white border-2 border-slate-900 rounded-xl p-3 mb-4">
+            <label class="block text-xs font-bold text-slate-500 uppercase">Reason for Complaint</label>
+            <input type="text" value="Too awesome / Never answers phone" readonly class="w-full text-sm font-bold text-slate-700 bg-transparent outline-none mt-1">
+          </div>
+        </div>
+
+        <!-- The Runaway Button Arena -->
+        <div id="buttonArena" class="relative h-28 bg-rose-100/70 border-2 border-dashed border-rose-300 rounded-2xl flex items-center justify-center overflow-hidden">
+          <button id="runawayBtn" onmouseover="dodgeButton()" onclick="catchButton()" class="absolute transition-all duration-150 ease-out bg-rose-500 hover:bg-rose-600 text-white font-black text-sm px-5 py-2.5 rounded-xl border-2 border-slate-900 custom-shadow-sm cursor-pointer select-none">
+            Submit Complaint ❌
+          </button>
+          <span id="arenaHelp" class="text-xs text-rose-400 font-bold pointer-events-none">Hover near the button if you dare!</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Section 4: The Sadaf Daily Fortune / Horoscope -->
+    <section class="bg-yellow-100 border-3 border-slate-900 rounded-3xl p-6 sm:p-8 custom-shadow text-center">
+      <span class="text-4xl">🔮</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-black text-slate-900 mt-2">
+        Sadaf's Daily Horoscope
+      </h2>
+      <p class="text-slate-600 text-sm max-w-md mx-auto mt-1 mb-6">
+        What do the celestial stars have aligned for Sadaf today?
+      </p>
+
+      <div class="max-w-lg mx-auto bg-white border-2 border-slate-900 rounded-2xl p-6 custom-shadow-sm mb-4">
+        <div id="fortuneText" class="text-lg font-bold text-slate-800 leading-snug">
+          "The stars indicate you will add 14 items to your shopping cart and close the tab without buying any of them."
+        </div>
+      </div>
+
+      <button onclick="generateFortune()" class="bg-slate-900 hover:bg-slate-800 text-yellow-300 font-extrabold px-6 py-3 rounded-2xl border-2 border-slate-900 custom-shadow-sm transition active:scale-95 inline-flex items-center gap-2">
+        <span>✨</span> Consult The Cosmos
+      </button>
+    </section>
+
+    <!-- Quiz: How Well Do You Know Sadaf? -->
+    <section class="bg-white border-3 border-slate-900 rounded-3xl p-6 sm:p-8 custom-shadow">
+      <div class="text-center max-w-xl mx-auto mb-6">
+        <h2 class="font-display text-3xl sm:text-4xl font-black text-slate-900">
+          🧠 The Ultimate Sadaf Trivia Quiz
+        </h2>
+        <p class="text-slate-600 text-sm mt-1">
+          Pick the only scientifically accurate answer:
+        </p>
+      </div>
+
+      <div class="max-w-xl mx-auto space-y-4">
+        <div class="bg-pink-50 border-2 border-slate-900 p-4 rounded-2xl">
+          <h3 class="font-display text-lg font-bold text-slate-900 mb-3">
+            Q: What is Sadaf most likely doing at 11:45 PM on a Tuesday?
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button onclick="handleQuizAnswer(false, this)" class="quiz-btn text-left p-3 rounded-xl border-2 border-slate-900 bg-white font-semibold text-xs sm:text-sm hover:bg-slate-100 transition">
+              A) Sleeping soundly for 8 hours
+            </button>
+            <button onclick="handleQuizAnswer(false, this)" class="quiz-btn text-left p-3 rounded-xl border-2 border-slate-900 bg-white font-semibold text-xs sm:text-sm hover:bg-slate-100 transition">
+              B) Reviewing spreadsheet budgets
+            </button>
+            <button onclick="handleQuizAnswer(false, this)" class="quiz-btn text-left p-3 rounded-xl border-2 border-slate-900 bg-white font-semibold text-xs sm:text-sm hover:bg-slate-100 transition">
+              C) Replying to texts from last week
+            </button>
+            <button onclick="handleQuizAnswer(true, this)" class="quiz-btn text-left p-3 rounded-xl border-2 border-slate-900 bg-white font-semibold text-xs sm:text-sm hover:bg-pink-100 transition">
+              D) Watching TikToks while ignoring sleep 🎯
+            </button>
+          </div>
+        </div>
+        <div id="quizResult" class="text-center font-bold text-sm min-h-[24px]"></div>
+      </div>
+    </section>
+
+    <!-- Footer with Love -->
+    <footer class="text-center py-6 border-t-2 border-slate-900/20 text-slate-600 text-sm flex flex-col items-center gap-2">
+      <p class="font-bold flex items-center gap-1.5 text-slate-800">
+        Engineered with <span class="text-rose-500 animate-pulse text-lg">❤️</span> for SADAF — The Undisputed Best Friend in the Multiverse.
+      </p>
+      <p class="text-xs text-slate-400">
+        Warning: No refunds, exchanges, or returns on this friendship. Contract is permanent.
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- MODAL: Compliment -->
+  <div id="complimentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border-3 border-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full custom-shadow text-center relative animate-bounce-slow">
+      <div class="text-5xl mb-3">💖</div>
+      <h3 class="font-display text-2xl font-bold text-slate-900">An Honest Truth About Sadaf</h3>
+      <p class="text-slate-600 font-medium text-sm sm:text-base mt-2 leading-relaxed" id="complimentText">
+        Jokes aside, you are truly one of a kind. Your laughter is contagious, your vibe is elite, and life is simply 1000x more fun with you as a best friend!
+      </p>
+      <button onclick="hideModal('complimentModal')" class="mt-6 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-6 rounded-xl border-2 border-slate-900 custom-shadow-sm transition">
+        Aww, Thanks! 🥰
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: Roast -->
+  <div id="roastModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border-3 border-slate-900 rounded-3xl p-6 sm:p-8 max-w-md w-full custom-shadow text-center relative">
+      <div class="text-5xl mb-3">🔥</div>
+      <h3 class="font-display text-2xl font-bold text-slate-900">Official Sadaf Roast</h3>
+      <p class="text-slate-600 font-medium text-sm sm:text-base mt-2 leading-relaxed" id="roastText">
+        Sadaf will literally send "on my way!" while still standing in front of the mirror wrapped in a towel looking for socks.
+      </p>
+      <div class="flex gap-2 justify-center mt-6">
+        <button onclick="nextRoast()" class="bg-amber-300 hover:bg-amber-400 text-slate-900 font-bold py-2.5 px-4 rounded-xl border-2 border-slate-900 custom-shadow-sm transition">
+          Another One 🌶️
+        </button>
+        <button onclick="hideModal('roastModal')" class="bg-slate-900 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-slate-800 transition">
+          I Surrender 🏳️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Audio synthesizer using Web Audio API (Zero external assets needed!)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      const now = audioCtx.currentTime;
+
+      if (type === 'boing') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
+        osc.frequency.exponentialRampToValueAtTime(200, now + 0.3);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === 'fanfare') {
+        [440, 554, 659, 880].forEach((freq, i) => {
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          o.connect(g);
+          g.connect(audioCtx.destination);
+          o.type = 'triangle';
+          o.frequency.value = freq;
+          g.gain.setValueAtTime(0.15, now + i * 0.08);
+          g.gain.linearRampToValueAtTime(0, now + i * 0.08 + 0.25);
+          o.start(now + i * 0.08);
+          o.stop(now + i * 0.08 + 0.25);
+        });
+      } else if (type === 'pop') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(200, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      }
+    }
+
+    // Confetti Storm
+    function triggerConfettiStorm() {
+      playSound('fanfare');
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+        setTimeout(() => {
+          confetti({
+            particleCount: 60,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 }
+          });
+          confetti({
+            particleCount: 60,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 }
+          });
+        }, 250);
+      }
+    }
+
+    // Speech synthesis for fun
+    function complimentSadafVoice() {
+      playSound('fanfare');
+      triggerConfettiStorm();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance("Attention everybody! Sadaf is officially the greatest best friend of all time!");
+        utterance.pitch = 1.2;
+        utterance.rate = 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function playCatchphrase(text, soundType) {
+      playSound('pop');
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.pitch = 1.1;
+        utterance.rate = 1.05;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Avatar Cycling
+    const avatars = ['👑', '👸', '💅', '💃', '🕶️', '🧁', '⭐', '🦄'];
+    let avatarIndex = 0;
+    function toggleAvatar() {
+      playSound('pop');
+      avatarIndex = (avatarIndex + 1) % avatars.length;
+      document.getElementById('avatarDisplay').innerText = avatars[avatarIndex];
+    }
+
+    // Random Mottos
+    const mottos = [
+      '"I have literally nothing to wear." (Closet bursting with 120 outfits)',
+      '"I\'m five minutes away!" (Just got into the shower)',
+      '"I\'m not hungry at all." (Eats your entire basket of fries)',
+      '"Let\'s save money this month." (Adds 6 lipsticks to cart)',
+      '"Don\'t let me stay up late tonight." (Awake at 3:15 AM watching cat videos)',
+      '"We need to talk right now." (Sends a 12-minute podcast voice memo)'
+    ];
+    function refreshMotto() {
+      playSound('pop');
+      const quoteEl = document.getElementById('randomQuote');
+      const pick = mottos[Math.floor(Math.random() * mottos.length)];
+      quoteEl.innerText = pick;
+    }
+
+    // Simulated Texting
+    const replies = [
+      "OMGG wait you won't BELIEVE what just happened 💀",
+      "Give me 5 mins (translates to 45 mins) 🏃‍♀️",
+      "Yes!! Wait no I'm in bed already 🛌",
+      "I was literally thinking about texting you this exact second!",
+      "*leaves on read for 4 hours, sends random reel*",
+      "Can we get iced coffee though? Priority #1 🥤",
+      "Wait hold on listening to voice note right now!"
+    ];
+
+    function simulateTextReply() {
+      playSound('pop');
+      const box = document.getElementById('sadafAnswerBox');
+      box.classList.remove('hidden');
+      box.innerText = "Sadaf is typing...";
+      
+      setTimeout(() => {
+        const reply = replies[Math.floor(Math.random() * replies.length)];
+        box.innerText = reply;
+        playSound('boing');
+      }, 700);
+    }
+
+    // Runaway Complaint Button
+    let dodgeCount = 0;
+    function dodgeButton() {
+      const btn = document.getElementById('runawayBtn');
+      const arena = document.getElementById('buttonArena');
+      const rect = arena.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+
+      dodgeCount++;
+      playSound('pop');
+
+      const maxX = rect.width - btnRect.width - 20;
+      const maxY = rect.height - btnRect.height - 20;
+
+      const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+      btn.style.left = `${randomX}px`;
+      btn.style.top = `${randomY}px`;
+
+      const help = document.getElementById('arenaHelp');
+      if (dodgeCount > 3) {
+        help.innerText = "Nice try! Sadaf's complaint department is permanently closed! 😂";
+      }
+    }
+
+    function catchButton() {
+      triggerConfettiStorm();
+      alert("ERROR 404: Sadaf is too awesome to accept complaints. Case dismissed with hugs! 🤗");
+    }
+
+    // Stamping contract
+    function stampApproval(btn) {
+      playSound('fanfare');
+      triggerConfettiStorm();
+      btn.innerText = "LOCKED IN FOREVER! 💖";
+      btn.classList.remove('bg-pink-500');
+      btn.classList.add('bg-emerald-500');
+      btn.disabled = true;
+    }
+
+    // Daily Fortunes
+    const fortunes = [
+      "The stars indicate you will add 14 items to your shopping cart and close the tab without buying any of them.",
+      "An unexpected iced matcha latte will enter your life and fix 87% of your problems.",
+      "You will start a sentence with 'To make a long story short' and proceed to talk for 45 minutes.",
+      "You are destined to look stunning today even if you stay in pajamas all day long.",
+      "A mysterious best friend will appreciate you unconditionally today (spoiler: it's the person who sent you this website)."
+    ];
+
+    function generateFortune() {
+      playSound('pop');
+      triggerConfettiStorm();
+      const fortuneEl = document.getElementById('fortuneText');
+      fortuneEl.innerText = fortunes[Math.floor(Math.random() * fortunes.length)];
+    }
+
+    // Quiz logic
+    function handleQuizAnswer(isCorrect, btn) {
+      const result = document.getElementById('quizResult');
+      const allBtns = document.querySelectorAll('.quiz-btn');
+      allBtns.forEach(b => b.classList.remove('bg-rose-200', 'bg-emerald-200'));
+
+      if (isCorrect) {
+        playSound('fanfare');
+        triggerConfettiStorm();
+        btn.classList.add('bg-emerald-200');
+        result.innerHTML = "<span class='text-emerald-600'>🎉 100% ACCURATE! You truly understand the legend that is Sadaf.</span>";
+      } else {
+        playSound('boing');
+        btn.classList.add('bg-rose-200');
+        result.innerHTML = "<span class='text-rose-500'>❌ False! Have you met Sadaf? Try option D! 😉</span>";
+      }
+    }
+
+    // Roasts list
+    const roasts = [
+      "Sadaf will literally send 'on my way!' while still standing in front of the mirror wrapped in a towel looking for socks.",
+      "Sadaf has 4,287 unread emails and says 'I'll clear them this weekend' every single weekend since 2019.",
+      "If overthinking was an Olympic sport, Sadaf would have 14 gold medals and be stressing over how to store them.",
+      "Sadaf's phone battery lives at 3% because plugging in a charger requires emotional preparation.",
+      "Sadaf says 'I need to go on a budget' while holding a $9 specialty beverage."
+    ];
+    let roastIdx = 0;
+    function nextRoast() {
+      playSound('pop');
+      roastIdx = (roastIdx + 1) % roasts.length;
+      document.getElementById('roastText').innerText = roasts[roastIdx];
+    }
+
+    // Modals
+    function showModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function hideModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Initialize Lucide icons
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
+
